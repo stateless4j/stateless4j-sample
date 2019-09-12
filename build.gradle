@@ -1,0 +1,20 @@
+plugins {
+    id 'java'
+}
+
+group 'com.github.stateless4j'
+version '1.0-SNAPSHOT'
+
+sourceCompatibility = 1.10
+
+repositories {
+    mavenCentral()
+    maven {
+        url 'https://oss.sonatype.org/content/repositories/snapshots/'
+    }
+}
+
+dependencies {
+    implementation 'com.github.stateless4j:stateless4j:2.5.2-SNAPSHOT'
+    testCompile group: 'junit', name: 'junit', version: '4.12'
+}

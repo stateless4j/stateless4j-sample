@@ -22,6 +22,7 @@ import com.github.oxo42.stateless4j.StateMachineConfig;
 
 /*
  * @startuml
+ * IDLE: entry: startBlinking()\nexit:stopBlinking()
  * [*] -> IDLE
  * IDLE -> SELECTION: COIN_INSERTED
  * SELECTION : entry: showList()\nexit: hideList()
@@ -61,6 +62,8 @@ public class Main {
         var config = new StateMachineConfig<State, Trigger>();
 
         config.configure(State.IDLE)
+                .onEntry(Main::startBlinking)
+                .onExit(Main::stopBlinking)
                 .permit(Trigger.COIN_INSERTED, State.SELECTION);
 
         config.configure(State.SELECTION)
@@ -85,6 +88,7 @@ public class Main {
                 .permit(Trigger.RESUME, State.PLAYING);
 
         var fsm = new StateMachine<>(State.IDLE, config);
+        fsm.fireInitialTransition();
         fsm.fire(Trigger.COIN_INSERTED);
         fsm.fire(Trigger.CANCEL);
         fsm.fire(Trigger.COIN_INSERTED);
@@ -124,5 +128,13 @@ public class Main {
 
     private static void pauseSong() {
         System.out.println("Pausing...");
+    }
+
+    private static void startBlinking() {
+        System.out.println("Start blinking: blink, blonk, blink, blonk...");
+    }
+
+    private static void stopBlinking() {
+        System.out.println("Stop blinking");
     }
 }
